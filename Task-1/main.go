@@ -7,11 +7,12 @@ import (
 	"strings"
 )
 
+type Student struct{
+	name string
+	subjectsMap map[string]float64
+	avgGrade float64
+}
 
-var name string;
-var numberOfSubjects int;
-var subjectsMap = make(map[string]float64)
-var resultGrade float64
 
 func main(){
 
@@ -31,11 +32,12 @@ func main(){
 		switch choice{
 			
 		case 1:
-			subjectsMap = make(map[string]float64)
-        	resultGrade = 0
-			getStudentInfo()
-			getgrade()
-			showResult()
+			student := Student{
+			subjectsMap: make(map[string]float64),
+			}
+			getStudentInfo(&student)
+			getgrade(&student)
+			showResult(&student)
 		case 2:
 			fmt.Println("Exiting...")
         	return
@@ -53,13 +55,21 @@ func main(){
 	
 }
 
-func getStudentInfo(){
+func getStudentInfo(s *Student){
 	fmt.Print("What is your name: ")
 	reader := bufio.NewReader(os.Stdin)
-	name, _ = reader.ReadString('\n')
-	name = strings.TrimSpace(name)
+	nameInput, _ := reader.ReadString('\n')
+	s.name = strings.TrimSpace(nameInput)
+
+	
+	
+}
 
 
+
+func getgrade(s *Student){
+
+	var numberOfSubjects int;
 	for {
 		fmt.Print("how many subjects: ")
 		fmt.Scanln(&numberOfSubjects)
@@ -68,14 +78,8 @@ func getStudentInfo(){
 		}
 		fmt.Println("Number must be greater than 0.")
 	}
-	
-	
-	
-
-}
 
 
-func getgrade(){
 	var subjectName string
 	var subjectGrade float64
 	var sum float64 = 0
@@ -96,24 +100,26 @@ func getgrade(){
 		}
 
 		sum += subjectGrade
-		subjectsMap[subjectName] = subjectGrade
+		s.subjectsMap[subjectName] = subjectGrade
 
 	}
-	resultGrade = sum / float64(numberOfSubjects)
+	s.avgGrade= sum / float64(numberOfSubjects)
 }
 
-func showResult(){
+func showResult(s *Student){
 
-	fmt.Printf("Dear %s you given name and grade of %d subjects \n", name, numberOfSubjects)
+	fmt.Println("----------------------------------------")
+	fmt.Printf("Dear %s here it is the name and grade of subjects you have given\n", s.name)
 	fmt.Println("----------------------------------------")
 	fmt.Printf("%-20s | % -10s\n", "Subject name", "Grade")
 	fmt.Println("----------------------------------------")
-	for subject, grade := range subjectsMap{
+	for subject, grade := range s.subjectsMap{
 
 		fmt.Printf("%-20s | %-10.2f\n", subject, grade)
 	}
 	fmt.Println("----------------------------------------")
-	fmt.Printf("The result grade is %.2f\n", resultGrade)
+	fmt.Printf("The average grade is %.2f\n", s.avgGrade)
+	fmt.Println()
 }
 
 func validateGrade(grade float64) bool{
