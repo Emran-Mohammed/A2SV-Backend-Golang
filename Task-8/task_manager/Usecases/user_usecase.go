@@ -15,7 +15,7 @@ type userUsercase struct{
 	jwtservice domain.IJWTService
 }
 
-func NewUserUsecase(repo domain.IUserRepository,pass domain.IPasswordService, jwt domain.IJWTService ) domain.IUserUsercase{
+func NewUserUsecase(repo domain.IUserRepository,pass domain.IPasswordService, jwt domain.IJWTService ) domain.IUserUsecase{
 	return &userUsercase{userRepo: repo, passwordService: pass, jwtservice: jwt}
 }
 
@@ -38,7 +38,7 @@ func(u *userUsercase) Login(ctx context.Context, user *domain.User) (string, err
 	}
 	token, err:= u.jwtservice.GenerateToken(user)
 	if err != nil{
-		return "", nil
+		return "", err
 	}
 	return token, nil
 }

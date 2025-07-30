@@ -71,7 +71,7 @@ type ITaskUsecase interface {
 	DeleteTask(ctx context.Context, id string) error
 }
 
-type IUserUsercase interface{
+type IUserUsecase interface{
 	Register(ctx context.Context, user *User) error
 	Login(ctx context.Context, user *User) (string, error)
 }

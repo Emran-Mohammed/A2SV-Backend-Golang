@@ -8,11 +8,11 @@ import (
 )
 
 type UserController struct {
-	userUsercase  domain.IUserUsercase
+	userUsercase  domain.IUserUsecase
 	
 }
 
-func NewUserController(uu domain.IUserUsercase)*UserController{
+func NewUserController(uu domain.IUserUsecase)*UserController{
 	return &UserController{userUsercase: uu}
 }
 
